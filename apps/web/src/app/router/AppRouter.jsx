@@ -4,12 +4,6 @@ import ConsoleLoader from '../../components/ConsoleLoader';
 import DashboardLayout from '../layouts/DashboardLayout';
 import { 
   Button, 
-  Card, 
-  CardHeader, 
-  CardTitle, 
-  CardDescription, 
-  CardContent, 
-  CardFooter,
   Input, 
   Table, 
   Loader, 
@@ -17,248 +11,241 @@ import {
   EmptyState 
 } from '../../components/ui';
 
-// --- PREMIUM VISUAL VIEW STUBS (Business-Logic Free) ---
+// --- PREMIUM CARDLESS EDITORIAL VIEW STUBS (Business-Logic Free) ---
 
 import { DashboardView } from '../../features/dashboard';
 
 const TwinView = () => (
-  <div className="space-y-6">
-    <h1 className="text-3xl font-extrabold tracking-tight">Digital Twin Console</h1>
-    <p className="text-sm text-muted">Optimize resume models and generate skill roadmaps.</p>
+  <div className="space-y-12 font-mono">
+    <div>
+      <h1 className="text-3xl font-extrabold tracking-tight">Digital Twin Console</h1>
+      <p className="text-[10px] text-[#6c6c6c] mt-1 tracking-wider uppercase font-mono">Optimize resume models and generate skill roadmaps.</p>
+    </div>
     
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <Card>
-        <CardHeader>
-          <CardTitle>Resume Optimizer</CardTitle>
-          <CardDescription>Scan and format documents against target roles.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p className="text-sm text-secondary leading-relaxed mb-6">
-            Upload your professional credentials to evaluate alignment and get instant optimization suggestions from the Gemini parser.
-          </p>
-          <Button variant="outline">Open Resume Panel</Button>
-        </CardContent>
-      </Card>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-12 py-8 border-y border-white/10">
+      <div className="space-y-4 pr-0 md:pr-12">
+        <h3 className="text-lg font-bold text-white uppercase">Resume Optimizer</h3>
+        <p className="text-[10px] text-[#6c6c6c] tracking-wider uppercase font-mono">Scan and format documents against target roles.</p>
+        <p className="text-xs text-[#a0a0a0] leading-relaxed">
+          Upload your professional credentials to evaluate alignment and get instant optimization suggestions from the Gemini parser.
+        </p>
+        <Button variant="outline" className="border-white/20 text-white hover:bg-white/5 text-[10px]">Open Resume Panel</Button>
+      </div>
       
-      <Card>
-        <CardHeader>
-          <CardTitle>Career Roadmap Builder</CardTitle>
-          <CardDescription>AI-generated pathways to target skills.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p className="text-sm text-secondary leading-relaxed mb-6">
-            Input a goal or technical domain to structure learning steps, milestones, and resource recommendations.
-          </p>
-          <Button variant="outline">Open Roadmap Panel</Button>
-        </CardContent>
-      </Card>
+      <div className="space-y-4 pl-0 md:pl-12 md:border-l md:border-white/10">
+        <h3 className="text-lg font-bold text-white uppercase">Career Roadmap Builder</h3>
+        <p className="text-[10px] text-[#6c6c6c] tracking-wider uppercase font-mono">AI-generated pathways to target skills.</p>
+        <p className="text-xs text-[#a0a0a0] leading-relaxed">
+          Input a goal or technical domain to structure learning steps, milestones, and resource recommendations.
+        </p>
+        <Button variant="outline" className="border-white/20 text-white hover:bg-white/5 text-[10px]">Open Roadmap Panel</Button>
+      </div>
     </div>
   </div>
 );
 
 const TwinResumeView = () => (
-  <div className="space-y-6 max-w-4xl">
-    <h1 className="text-3xl font-extrabold tracking-tight">Resume Analyzer</h1>
-    <Card>
-      <CardHeader>
-        <CardTitle>Upload Document</CardTitle>
-        <CardDescription>Supported formats: PDF, DOCX (JSON Schema extraction)</CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        <Input type="file" className="border-dashed cursor-pointer" />
-        <Input placeholder="Enter Target Role (e.g. Senior Staff Engineer)" />
-      </CardContent>
-      <CardFooter>
-        <Button>Analyze Credentials</Button>
-      </CardFooter>
-    </Card>
+  <div className="space-y-8 max-w-4xl font-mono">
+    <div>
+      <h1 className="text-3xl font-extrabold tracking-tight">Resume Analyzer</h1>
+      <p className="text-[10px] text-[#6c6c6c] mt-1 tracking-wider uppercase font-mono">Upload and align documents against target positions</p>
+    </div>
+    <div className="space-y-6 border-l-2 border-[#8898e7] pl-8 py-4">
+      <div className="space-y-2">
+        <label className="text-[9px] text-[#6c6c6c] uppercase tracking-wider block">Document File</label>
+        <Input type="file" className="border-dashed cursor-pointer text-xs" />
+      </div>
+      <div className="space-y-2">
+        <label className="text-[9px] text-[#6c6c6c] uppercase tracking-wider block">Target Role</label>
+        <Input placeholder="Enter Target Role (e.g. Senior Staff Engineer)" className="text-xs focus:border-[#8898e7]/50" />
+      </div>
+      <div className="pt-4">
+        <Button className="bg-white text-black border-white hover:bg-white/90">Analyze Credentials</Button>
+      </div>
+    </div>
   </div>
 );
 
 const TwinRoadmapView = () => (
-  <div className="space-y-6">
-    <h1 className="text-3xl font-extrabold tracking-tight">Adaptive Learning Roadmap</h1>
-    <Card>
-      <CardHeader>
-        <CardTitle>Path Generation</CardTitle>
-        <CardDescription>Configure target milestone path</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <EmptyState 
-          title="No Active Roadmap Found" 
-          description="Enter a technical subject or target career goal to build an AI learning pathway."
-          action={<Button>Create Roadmap</Button>}
-        />
-      </CardContent>
-    </Card>
+  <div className="space-y-8 font-mono">
+    <div>
+      <h1 className="text-3xl font-extrabold tracking-tight">Adaptive Learning Roadmap</h1>
+      <p className="text-[10px] text-[#6c6c6c] mt-1 tracking-wider uppercase font-mono">Configure target milestone path</p>
+    </div>
+    <div className="py-12 border-y border-white/10">
+      <EmptyState 
+        title="No Active Roadmap Found" 
+        description="Enter a technical subject or target career goal to build an AI learning pathway."
+        action={<Button className="bg-white text-black border-white hover:bg-white/90">Create Roadmap</Button>}
+      />
+    </div>
   </div>
 );
 
 const VisionView = () => (
-  <div className="space-y-6">
-    <h1 className="text-3xl font-extrabold tracking-tight">Vision OS Board</h1>
-    <p className="text-sm text-muted">Review alignment statistics and goals timeline.</p>
-    <Card>
-      <CardHeader>
-        <CardTitle>Loading Metrics...</CardTitle>
-        <CardDescription>Establishing secure connection</CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-3">
-        <Skeleton className="h-6 w-full" />
-        <Skeleton className="h-6 w-5/6" />
-        <Skeleton className="h-6 w-4/5" />
-      </CardContent>
-    </Card>
+  <div className="space-y-8 font-mono">
+    <div>
+      <h1 className="text-3xl font-extrabold tracking-tight">Vision OS Board</h1>
+      <p className="text-[10px] text-[#6c6c6c] mt-1 tracking-wider uppercase font-mono">Review alignment statistics and goals timeline.</p>
+    </div>
+    <div className="space-y-4 py-8 border-y border-white/10">
+      <div className="text-xs text-[#8c8c8c] tracking-widest uppercase mb-4 animate-pulse">Establishing secure connection...</div>
+      <Skeleton className="h-6 w-full bg-white/5" />
+      <Skeleton className="h-6 w-5/6 bg-white/5" />
+      <Skeleton className="h-6 w-4/5 bg-white/5" />
+    </div>
   </div>
 );
 
 const LegacyView = () => (
-  <div className="space-y-6">
-    <h1 className="text-3xl font-extrabold tracking-tight">Legacy Connector</h1>
-    <Card>
-      <CardHeader>
-        <CardTitle>System Bridge</CardTitle>
-        <CardDescription>Legacy database sync indicators</CardDescription>
-      </CardHeader>
-      <CardContent className="flex flex-col items-center justify-center py-10">
-        <Loader size="lg" className="mb-4" />
-        <p className="text-sm text-muted">Establishing remote sync tunnels...</p>
-      </CardContent>
-    </Card>
+  <div className="space-y-8 font-mono">
+    <div>
+      <h1 className="text-3xl font-extrabold tracking-tight">Legacy Connector</h1>
+      <p className="text-[10px] text-[#6c6c6c] mt-1 tracking-wider uppercase font-mono">Legacy database sync indicators</p>
+    </div>
+    <div className="flex flex-col items-center justify-center py-16 border-y border-white/10">
+      <Loader size="lg" className="mb-4 text-[#8898e7]" />
+      <p className="text-xs text-[#8c8c8c] tracking-widest uppercase animate-pulse">Establishing remote sync tunnels...</p>
+    </div>
   </div>
 );
 
 const GoalsView = () => (
-  <div className="space-y-6">
+  <div className="space-y-6 font-mono">
     <h1 className="text-3xl font-extrabold tracking-tight">Strategic Goals</h1>
-    <EmptyState 
-      title="Create Your First Goal"
-      description="Define milestone targets to calibrate task boards and learning pathways."
-      action={<Button>Create Goal</Button>}
-    />
+    <div className="py-12 border-y border-white/10">
+      <EmptyState 
+        title="Create Your First Goal"
+        description="Define milestone targets to calibrate task boards and learning pathways."
+        action={<Button className="bg-white text-black border-white hover:bg-white/90">Create Goal</Button>}
+      />
+    </div>
   </div>
 );
 
 const TasksView = () => (
-  <div className="space-y-6">
-    <h1 className="text-3xl font-extrabold tracking-tight">Operational Tasks</h1>
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-      <Card>
-        <CardHeader className="bg-popover/40 border-b border-border/60 pb-3">
-          <CardTitle className="text-sm uppercase tracking-wider text-muted">To Do</CardTitle>
-        </CardHeader>
-        <CardContent className="p-4 space-y-3">
-          <div className="p-3 bg-secondary/15 border border-border/80 rounded-lg text-xs">Verify Clerk JWKS JWT decoding</div>
-          <div className="p-3 bg-secondary/15 border border-border/80 rounded-lg text-xs">Configure PostgreSQL schema seeds</div>
-        </CardContent>
-      </Card>
+  <div className="space-y-8 font-mono">
+    <div>
+      <h1 className="text-3xl font-extrabold tracking-tight">Operational Tasks</h1>
+      <p className="text-[10px] text-[#6c6c6c] mt-1 tracking-wider uppercase font-mono">Calibrate tasks list status</p>
+    </div>
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-12 py-8 border-y border-white/10">
+      <div className="space-y-4 pr-0 md:pr-6">
+        <h3 className="text-sm uppercase tracking-wider text-[#8c8c8c] border-b border-white/10 pb-2 font-bold">To Do</h3>
+        <div className="space-y-3">
+          <div className="p-3 bg-white/5 border border-white/10 rounded-none text-xs hover:border-white/30 transition-all duration-300">Verify Clerk JWKS JWT decoding</div>
+          <div className="p-3 bg-white/5 border border-white/10 rounded-none text-xs hover:border-white/30 transition-all duration-300">Configure PostgreSQL schema seeds</div>
+        </div>
+      </div>
       
-      <Card>
-        <CardHeader className="bg-popover/40 border-b border-border/60 pb-3">
-          <CardTitle className="text-sm uppercase tracking-wider text-muted">In Progress</CardTitle>
-        </CardHeader>
-        <CardContent className="p-4 space-y-3">
-          <div className="p-3 bg-secondary/15 border border-primary/20 rounded-lg text-xs">Overhaul design system layouts</div>
-        </CardContent>
-      </Card>
+      <div className="space-y-4 px-0 md:px-6 md:border-x md:border-white/10">
+        <h3 className="text-sm uppercase tracking-wider text-white border-b border-[#8898e7]/30 pb-2 font-bold flex items-center justify-between">
+          <span>In Progress</span>
+          <span className="h-1.5 w-1.5 bg-[#8898e7] rounded-full animate-pulse"></span>
+        </h3>
+        <div className="space-y-3">
+          <div className="p-3 bg-white/5 border border-[#8898e7]/30 rounded-none text-xs hover:border-[#8898e7] transition-all duration-300">Overhaul design system layouts</div>
+        </div>
+      </div>
 
-      <Card>
-        <CardHeader className="bg-popover/40 border-b border-border/60 pb-3">
-          <CardTitle className="text-sm uppercase tracking-wider text-muted">Completed</CardTitle>
-        </CardHeader>
-        <CardContent className="p-4 space-y-3">
-          <div className="p-3 bg-secondary/15 border border-border/80 rounded-lg text-xs line-through opacity-55">Setup monorepo directories</div>
-        </CardContent>
-      </Card>
+      <div className="space-y-4 pl-0 md:pl-6">
+        <h3 className="text-sm uppercase tracking-wider text-[#6c6c6c] border-b border-white/10 pb-2 font-bold">Completed</h3>
+        <div className="space-y-3">
+          <div className="p-3 bg-white/5 border border-white/5 rounded-none text-xs line-through opacity-45">Setup monorepo directories</div>
+        </div>
+      </div>
     </div>
   </div>
 );
 
 const LearningView = () => (
-  <div className="space-y-6">
-    <h1 className="text-3xl font-extrabold tracking-tight">Learning Hub</h1>
-    <Card>
-      <CardHeader>
-        <CardTitle>Verified Skills Progress</CardTitle>
-        <CardDescription>Progress tracking for active curricula</CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        <div>
-          <div className="flex justify-between text-sm mb-1.5">
-            <span>Prisma Database Adapters</span>
-            <span className="text-primary font-bold">100%</span>
-          </div>
-          <div className="h-2 w-full bg-border rounded-full overflow-hidden">
-            <div className="h-full bg-primary" style={{ width: '100%' }} />
-          </div>
+  <div className="space-y-8 max-w-2xl font-mono">
+    <div>
+      <h1 className="text-3xl font-extrabold tracking-tight">Learning Hub</h1>
+      <p className="text-[10px] text-[#6c6c6c] mt-1 tracking-wider uppercase font-mono">Progress tracking for active curricula</p>
+    </div>
+    <div className="space-y-6 py-6 border-y border-white/10">
+      <div>
+        <div className="flex justify-between text-xs mb-1.5 uppercase font-bold tracking-wide text-white">
+          <span>Prisma Database Adapters</span>
+          <span className="text-[#8898e7]">100%</span>
         </div>
-        <div>
-          <div className="flex justify-between text-sm mb-1.5">
-            <span>Zustand State Stores</span>
-            <span className="text-primary font-bold">40%</span>
-          </div>
-          <div className="h-2 w-full bg-border rounded-full overflow-hidden">
-            <div className="h-full bg-primary" style={{ width: '40%' }} />
-          </div>
+        <div className="h-1 w-full bg-white/10 overflow-hidden border border-white/5">
+          <div className="h-full bg-[#8898e7]" style={{ width: '100%' }} />
         </div>
-      </CardContent>
-    </Card>
+      </div>
+      <div>
+        <div className="flex justify-between text-xs mb-1.5 uppercase font-bold tracking-wide text-white">
+          <span>Zustand State Stores</span>
+          <span>40%</span>
+        </div>
+        <div className="h-1 w-full bg-white/10 overflow-hidden border border-white/5">
+          <div className="h-full bg-white" style={{ width: '40%' }} />
+        </div>
+      </div>
+    </div>
   </div>
 );
 
 const ProfileView = () => (
-  <div className="space-y-6 max-w-2xl">
-    <h1 className="text-3xl font-extrabold tracking-tight">User Profile</h1>
-    <Card>
-      <CardHeader>
-        <CardTitle>Account Details</CardTitle>
-        <CardDescription>Update your contact info and metadata</CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        <Input placeholder="Full Name" defaultValue="User" />
-        <Input placeholder="Email Address" defaultValue="user@eunoia.os" disabled />
-      </CardContent>
-      <CardFooter>
-        <Button>Save Profile</Button>
-      </CardFooter>
-    </Card>
+  <div className="space-y-8 max-w-xl font-mono">
+    <div>
+      <h1 className="text-3xl font-extrabold tracking-tight">User Profile</h1>
+      <p className="text-[10px] text-[#6c6c6c] mt-1 tracking-wider uppercase font-mono">Update your contact info and metadata</p>
+    </div>
+    <div className="space-y-4 border-l-2 border-[#8898e7] pl-8 py-4">
+      <div className="space-y-2">
+        <label className="text-[9px] text-[#6c6c6c] uppercase tracking-wider block">Full Name</label>
+        <Input placeholder="Full Name" defaultValue="User" className="text-xs focus:border-[#8898e7]/50" />
+      </div>
+      <div className="space-y-2">
+        <label className="text-[9px] text-[#6c6c6c] uppercase tracking-wider block">Email Address</label>
+        <Input placeholder="Email Address" defaultValue="user@eunoia.os" disabled className="text-xs opacity-50 cursor-not-allowed" />
+      </div>
+      <div className="pt-4">
+        <Button className="bg-white text-black border-white hover:bg-white/90">Save Profile</Button>
+      </div>
+    </div>
   </div>
 );
 
 const SettingsView = () => (
-  <div className="space-y-6 max-w-2xl">
-    <h1 className="text-3xl font-extrabold tracking-tight">System Settings</h1>
-    <Card>
-      <CardHeader>
-        <CardTitle>Configuration Options</CardTitle>
-        <CardDescription>Adjust environment configurations and defaults</CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        <Input placeholder="Core Server Port" defaultValue="5000" />
-        <Input placeholder="OpenAI / Gemini Model Version" defaultValue="gemini-1.5-flash" />
-      </CardContent>
-      <CardFooter>
-        <Button>Apply Adjustments</Button>
-      </CardFooter>
-    </Card>
+  <div className="space-y-8 max-w-xl font-mono">
+    <div>
+      <h1 className="text-3xl font-extrabold tracking-tight">System Settings</h1>
+      <p className="text-[10px] text-[#6c6c6c] mt-1 tracking-wider uppercase font-mono">Adjust environment configurations and defaults</p>
+    </div>
+    <div className="space-y-4 border-l-2 border-[#8898e7] pl-8 py-4">
+      <div className="space-y-2">
+        <label className="text-[9px] text-[#6c6c6c] uppercase tracking-wider block">Core Server Port</label>
+        <Input placeholder="Core Server Port" defaultValue="5000" className="text-xs focus:border-[#8898e7]/50" />
+      </div>
+      <div className="space-y-2">
+        <label className="text-[9px] text-[#6c6c6c] uppercase tracking-wider block">AI Engine Version</label>
+        <Input placeholder="OpenAI / Gemini Model Version" defaultValue="gemini-1.5-flash" className="text-xs focus:border-[#8898e7]/50" />
+      </div>
+      <div className="pt-4">
+        <Button className="bg-white text-black border-white hover:bg-white/90">Apply Adjustments</Button>
+      </div>
+    </div>
   </div>
 );
 
 const SignInView = () => (
-  <div className="min-h-screen bg-background flex items-center justify-center p-6 aurora">
-    <Card className="w-full max-w-sm p-8 shadow-2xl border border-primary/20 glow-blue">
-      <div className="text-center pb-6">
-        <span className="text-2xl font-extrabold tracking-tighter bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+  <div className="min-h-screen bg-background flex items-center justify-center p-6 aurora relative z-10">
+    <div className="w-full max-w-sm p-10 border border-[#8898e7]/30 bg-black/60 backdrop-blur-md glow-white rounded-none font-mono">
+      <div className="text-center pb-8">
+        <span className="text-2xl font-black tracking-[0.25em] text-white">
           EUNOIA OS
         </span>
-        <p className="text-xs text-muted mt-2">Futuristic AI operating system dashboard</p>
+        <p className="text-[9px] text-[#8c8c8c] mt-2 uppercase tracking-widest font-mono">Futuristic AI operating system dashboard</p>
       </div>
       <div className="space-y-4">
-        <Input placeholder="Email Address" />
-        <Input type="password" placeholder="Password" />
-        <Button className="w-full mt-2">Sign In</Button>
+        <Input placeholder="Email Address" className="bg-black border-white/20 text-xs focus:border-[#8898e7]/50" />
+        <Input type="password" placeholder="Password" className="bg-black border-white/20 text-xs focus:border-[#8898e7]/50" />
+        <Button className="w-full mt-4 bg-white text-black border-white hover:bg-white/90">Sign In</Button>
       </div>
-    </Card>
+    </div>
   </div>
 );
 

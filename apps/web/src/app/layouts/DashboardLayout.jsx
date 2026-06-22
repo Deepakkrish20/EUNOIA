@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 
 /**
@@ -9,6 +9,7 @@ import { Outlet, Link, useLocation } from 'react-router-dom';
  */
 export default function DashboardLayout() {
   const location = useLocation();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const navItems = [
     { name: 'Dashboard', path: '/dashboard' },
@@ -62,48 +63,70 @@ export default function DashboardLayout() {
         <div className="blueprint-line-x top-[65%]"></div>
       </div>
 
-      {/* 2. SIDEBAR NAVIGATION - Sharp Webflow Layout Grid */}
-      <aside className="w-64 border-r border-white/10 flex flex-col z-10 bg-black/40 backdrop-blur-md relative">
-        {/* Top Header */}
-        <div className="flex h-20 items-center px-8 border-b border-white/10">
-          <Link to="/" className="text-sm font-extrabold tracking-[0.25em] text-white flex items-center gap-2">
-            <span className="h-1.5 w-1.5 bg-white rounded-full animate-ping"></span>
-            EUNOIA OS
-          </Link>
-        </div>
+      {/* 2. SIDEBAR NAVIGATION - Collapsible Grid Layout */}
+      <aside 
+        className={`flex flex-col z-10 bg-black/40 backdrop-blur-md relative transition-all duration-300 ease-in-out ${
+          isSidebarOpen ? 'w-64 border-r border-white/10' : 'w-0 overflow-hidden border-r-0'
+        }`}
+      >
+        <div className="w-64 flex flex-col h-full">
+          {/* Top Header */}
+          <div className="flex h-20 items-center px-8 border-b border-white/10">
+            <Link to="/" className="text-sm font-extrabold tracking-[0.25em] text-white flex items-center gap-2">
+              <span className="h-1.5 w-1.5 bg-white rounded-full animate-ping"></span>
+              EUNOIA OS
+            </Link>
+          </div>
 
-        {/* Navigation list */}
-        <nav className="flex-1 space-y-[1px] py-6 overflow-y-auto">
-          {navItems.map((item) => {
-            const isActive = location.pathname === item.path;
-            return (
-              <Link
-                key={item.path}
-                to={item.path}
-                className={`flex items-center px-8 py-3 text-[10px] tracking-[0.12rem] uppercase transition-all duration-300 border-y border-transparent ${
-                  item.indent 
-                    ? 'pl-12 text-[#6c6c6c] border-l border-white/5 hover:text-white' 
-                    : 'text-[#8c8c8c] hover:text-white'
-                } ${
-                  isActive
-                    ? 'text-white border-y-white/10 bg-white/5 font-bold animate-[blink_0.8s_ease-out_1]'
-                    : 'hover:bg-white/5'
-                }`}
-              >
-                {item.name}
-              </Link>
-            );
-          })}
-        </nav>
+          {/* Navigation list */}
+          <nav className="flex-1 space-y-[1px] py-6 overflow-y-auto">
+            {navItems.map((item) => {
+              const isActive = location.pathname === item.path;
+              return (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className={`flex items-center px-8 py-3 text-[10px] tracking-[0.12rem] uppercase transition-all duration-300 border-y border-transparent ${
+                    item.indent 
+                      ? 'pl-12 text-[#6c6c6c] border-l border-white/5 hover:text-white' 
+                      : 'text-[#8c8c8c] hover:text-white'
+                  } ${
+                    isActive
+                      ? 'text-white border-y-white/10 bg-white/5 font-bold animate-[blink_0.8s_ease-out_1]'
+                      : 'hover:bg-white/5'
+                  }`}
+                >
+                  {item.name}
+                </Link>
+              );
+            })}
+          </nav>
+        </div>
       </aside>
 
       {/* 3. MAIN WORKSPACE CONTAINER */}
       <div className="flex flex-1 flex-col overflow-hidden z-10 bg-black/20 backdrop-blur-sm">
         {/* Kernel Top Header */}
         <header className="flex h-20 items-center justify-between border-b border-white/10 px-8 bg-black/40">
-          <div className="text-[10px] font-medium tracking-[0.15em] text-[#8c8c8c] flex items-center gap-2">
-            <span className="h-1.5 w-1.5 rounded-full bg-white animate-pulse"></span>
-            KERNEL ACTIVE
+          <div className="flex items-center gap-4">
+            {/* STYLIZED BURGER TOGGLE BUTTON */}
+            <button 
+              onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+              className="p-2 border border-white/10 hover:border-white/30 hover:bg-white/5 transition-all duration-300 flex items-center gap-3 text-[9px] tracking-[0.15em] uppercase font-mono text-white rounded-none"
+              aria-label="Toggle Console Navigation Menu"
+            >
+              <div className="flex flex-col gap-[3px] w-3.5">
+                <span className={`h-[1px] bg-white transition-all duration-300 origin-left ${isSidebarOpen ? 'rotate-45 translate-y-[0.5px] translate-x-[1px]' : ''}`}></span>
+                <span className={`h-[1px] bg-white transition-all duration-300 ${isSidebarOpen ? 'opacity-0 scale-0' : ''}`}></span>
+                <span className={`h-[1px] bg-white transition-all duration-300 origin-left ${isSidebarOpen ? '-rotate-45 -translate-y-[0.5px] translate-x-[1px]' : ''}`}></span>
+              </div>
+              <span>Console Menu</span>
+            </button>
+
+            <div className="text-[10px] font-medium tracking-[0.15em] text-[#8c8c8c] flex items-center gap-2 border-l border-white/10 pl-4 h-6">
+              <span className="h-1.5 w-1.5 rounded-full bg-white animate-pulse"></span>
+              KERNEL ACTIVE
+            </div>
           </div>
           <div className="flex items-center gap-6">
             <span className="text-[10px] tracking-[0.15em] text-[#8c8c8c]">SYS // V1.0.0</span>
