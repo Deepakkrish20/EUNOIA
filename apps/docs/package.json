@@ -1,0 +1,7 @@
+{
+  "name": "@eunoia-os/docs",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "EUNOIA OS System Documentation & Architecture Guides"
+}

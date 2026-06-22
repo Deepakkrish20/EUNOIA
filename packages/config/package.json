@@ -1,0 +1,11 @@
+{
+  "name": "@eunoia-os/config",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./index.js",
+  "exports": {
+    "./tailwind": "./tailwind/tailwind.config.shared.js",
+    "./eslint": "./eslint/eslint.config.shared.js"
+  }
+}
