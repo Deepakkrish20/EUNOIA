@@ -84,43 +84,6 @@
   box-shadow: 0 0 20px -5px rgba(255, 255, 255, 0.08);
 }
 
-/* Blueprint layout wireframe lines */
-.blueprint-line-y {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 1px;
-  background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.06) 30%, rgba(255, 255, 255, 0.06) 70%, transparent);
-  pointer-events: none;
-}
-
-.blueprint-line-x {
-  position: absolute;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.06) 30%, rgba(255, 255, 255, 0.06) 70%, transparent);
-  pointer-events: none;
-}
-
-/* Background Auroras */
-.aurora {
-  position: relative;
-  overflow: hidden;
-}
-
-.aurora::before {
-  content: "";
-  position: absolute;
-  top: -30%;
-  left: -20%;
-  width: 140%;
-  height: 140%;
-  background: radial-gradient(circle, rgba(136, 152, 231, 0.04) 0%, transparent 60%);
-  z-index: -1;
-  pointer-events: none;
-  filter: blur(140px);
-}
 
 /* Custom typographic characters and words blink animations */
 @keyframes text-fade-in {
@@ -196,3 +159,41 @@
   opacity: 0.35;
   filter: brightness(0.6) contrast(1.1);
 }
+
+/* Minimalist Mode Overrides */
+.theme-dark-design {
+  --background: 240 10% 2%; /* #030303 - Deep obsidian black */
+  --foreground: 0 0% 98%;
+  --card: 240 10% 5.9%; /* #0f0f11 - Dark grey card */
+  --card-foreground: 0 0% 98%;
+  --border: 240 5.9% 10%; /* very subtle border */
+  --radius: 12px;
+}
+
+/* Drastic theme difference: enforce rounded corners on form controls and containers in minimalist mode */
+.theme-dark-design select,
+.theme-dark-design input,
+.theme-dark-design textarea,
+.theme-dark-design button,
+.theme-dark-design .rounded-none {
+  border-radius: 12px !important;
+}
+
+.theme-dark-design .rounded-full {
+  border-radius: 9999px !important;
+}
+
+.theme-dark-design .rounded-2xl {
+  border-radius: 1rem !important;
+}
+
+.theme-dark-design .rounded-xl {
+  border-radius: 0.75rem !important;
+}
+
+.theme-dark-design .rounded-lg {
+  border-radius: 0.5rem !important;
+}
+
+
+

@@ -12,6 +12,7 @@ import {
   X 
 } from 'lucide-react';
 import { useGoalStore } from '../../app/store/goalStore.js';
+import { useAppStore } from '../../app/store/useAppStore.js';
 import { 
   Button, 
   Input, 
@@ -41,6 +42,7 @@ function formatDate(dateString) {
  * Main Goals View Controller
  */
 export function GoalsView() {
+  const { theme } = useAppStore();
   const {
     goals,
     activeGoals,
@@ -241,18 +243,22 @@ export function GoalsView() {
   const filteredGoals = getFilteredGoals();
 
   return (
-    <div className="space-y-12 pb-24 font-mono">
+    <div className={`space-y-12 pb-24 ${theme === 'dark-design' ? 'font-sans' : 'font-mono'}`}>
       {/* 1. Header Section */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-6 border-b border-white/10">
+      <div className={`flex flex-col md:flex-row md:items-center justify-between gap-6 pb-6 border-b ${
+        theme === 'dark-design' ? 'border-white/5' : 'border-white/10'
+      }`}>
         <div>
-          <h1 className="text-3xl font-extrabold tracking-tight text-white uppercase font-mono">Strategic Goals</h1>
-          <p className="text-[10px] text-[#6c6c6c] mt-1 tracking-wider uppercase font-mono">
+          <h1 className={`text-3xl font-extrabold tracking-tight text-white uppercase ${theme === 'dark-design' ? 'font-sans' : 'font-mono'}`}>Strategic Goals</h1>
+          <p className={`text-[10px] text-[#6c6c6c] mt-1 tracking-wider uppercase ${theme === 'dark-design' ? 'font-sans' : 'font-mono'}`}>
             Define milestone targets to calibrate task boards and learning pathways.
           </p>
         </div>
         <Button 
           onClick={handleOpenCreate}
-          className="bg-white text-black border-white hover:bg-white/90 self-start md:self-auto rounded-none text-[10px] tracking-widest font-bold uppercase py-2 px-4 flex items-center gap-2"
+          className={`bg-white text-black border-white hover:bg-white/90 self-start md:self-auto text-[10px] tracking-widest font-bold uppercase py-2 px-4 flex items-center gap-2 ${
+            theme === 'dark-design' ? 'rounded-xl font-sans' : 'rounded-none font-mono'
+          }`}
         >
           <Plus size={14} />
           Create Goal
@@ -274,39 +280,55 @@ export function GoalsView() {
       )}
 
       {/* 3. Goal Statistics Section (Cardless Editorial grid) */}
-      <section className="grid grid-cols-2 lg:grid-cols-4 gap-6 py-6 border-b border-white/10">
+      <section className={`grid grid-cols-2 lg:grid-cols-4 gap-6 py-6 border-b transition-all duration-300 ${
+        theme === 'dark-design'
+          ? 'bg-[#09090b] border border-white/5 rounded-2xl p-6 shadow-xl mb-6'
+          : 'border-white/10'
+      }`}>
         <div className="space-y-2">
-          <span className="text-[9px] text-[#6c6c6c] tracking-widest uppercase font-mono block">Total Objectives</span>
+          <span className={`text-[9px] text-[#6c6c6c] tracking-widest uppercase block ${theme === 'dark-design' ? 'font-sans' : 'font-mono'}`}>Total Objectives</span>
           <div className="text-4xl font-black text-white font-sans tracking-tight">{totalGoals}</div>
         </div>
-        <div className="space-y-2 border-l border-white/10 pl-6">
-          <span className="text-[9px] text-[#6c6c6c] tracking-widest uppercase font-mono block">Active Scopes</span>
-          <div className="text-4xl font-black text-[#8898e7] font-sans tracking-tight">{activeGoalsCount}</div>
+        <div className={`space-y-2 pl-6 ${theme === 'dark-design' ? 'border-l border-white/5' : 'border-l border-white/10'}`}>
+          <span className={`text-[9px] text-[#6c6c6c] tracking-widest uppercase block ${theme === 'dark-design' ? 'font-sans' : 'font-mono'}`}>Active Scopes</span>
+          <div className={`text-4xl font-black font-sans tracking-tight ${theme === 'dark-design' ? 'text-white' : 'text-[#8898e7]'}`}>{activeGoalsCount}</div>
         </div>
-        <div className="space-y-2 border-l border-white/10 pl-6">
-          <span className="text-[9px] text-[#6c6c6c] tracking-widest uppercase font-mono block">Completed Nodes</span>
+        <div className={`space-y-2 pl-6 ${theme === 'dark-design' ? 'border-l border-white/5' : 'border-l border-white/10'}`}>
+          <span className={`text-[9px] text-[#6c6c6c] tracking-widest uppercase block ${theme === 'dark-design' ? 'font-sans' : 'font-mono'}`}>Completed Nodes</span>
           <div className="text-4xl font-black text-[#00ffb2] font-sans tracking-tight">{completedGoalsCount}</div>
         </div>
-        <div className="space-y-2 border-l border-white/10 pl-6">
-          <span className="text-[9px] text-[#6c6c6c] tracking-widest uppercase font-mono block">Completion Rate</span>
+        <div className={`space-y-2 pl-6 ${theme === 'dark-design' ? 'border-l border-white/5' : 'border-l border-white/10'}`}>
+          <span className={`text-[9px] text-[#6c6c6c] tracking-widest uppercase block ${theme === 'dark-design' ? 'font-sans' : 'font-mono'}`}>Completion Rate</span>
           <div className="text-4xl font-black text-white font-sans tracking-tight">{completionPercentage}%</div>
         </div>
       </section>
 
       {/* 4. Controls: Tabs */}
-      <div className="flex border-b border-white/10 gap-8">
+      <div className={`flex transition-all duration-300 ${
+        theme === 'dark-design'
+          ? 'bg-[#09090b] p-1.5 border border-white/5 rounded-xl w-fit gap-1'
+          : 'border-b border-white/10 gap-8'
+      }`}>
         {['all', 'active', 'completed', 'archived'].map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
-            className={`pb-4 text-[10px] tracking-[0.15em] uppercase transition-all relative ${
-              activeTab === tab 
-                ? 'text-white font-bold' 
-                : 'text-[#6c6c6c] hover:text-white'
+            className={`text-[10px] tracking-[0.15em] uppercase transition-all relative ${
+              theme === 'dark-design'
+                ? `px-4 py-2 rounded-lg text-xs font-bold transition-all ${
+                    activeTab === tab 
+                      ? 'bg-white text-black font-extrabold shadow-sm' 
+                      : 'text-[#8c8c8c] hover:text-white'
+                  }`
+                : `pb-4 ${
+                    activeTab === tab 
+                      ? 'text-white font-bold' 
+                      : 'text-[#6c6c6c] hover:text-white'
+                  }`
             }`}
           >
             {tab}
-            {activeTab === tab && (
+            {theme !== 'dark-design' && activeTab === tab && (
               <motion.div 
                 layoutId="activeTabUnderline"
                 className="absolute bottom-0 left-0 right-0 h-[1px] bg-[#8898e7]" 
@@ -320,8 +342,8 @@ export function GoalsView() {
       <div className="relative min-h-[250px]">
         {loading && goals.length === 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 py-6">
-            <Skeleton className="h-44 w-full bg-white/5 rounded-none" />
-            <Skeleton className="h-44 w-full bg-white/5 rounded-none" />
+            <Skeleton className={`h-44 w-full bg-white/5 ${theme === 'dark-design' ? 'rounded-2xl' : 'rounded-none'}`} />
+            <Skeleton className={`h-44 w-full bg-white/5 ${theme === 'dark-design' ? 'rounded-2xl' : 'rounded-none'}`} />
           </div>
         ) : filteredGoals.length === 0 ? (
           <div className="py-16">
@@ -331,7 +353,9 @@ export function GoalsView() {
               action={activeTab !== 'archived' && (
                 <Button 
                   onClick={handleOpenCreate} 
-                  className="bg-white text-black border-white hover:bg-white/90 rounded-none text-[10px] uppercase font-bold"
+                  className={`bg-white text-black border-white hover:bg-white/90 text-[10px] uppercase font-bold ${
+                    theme === 'dark-design' ? 'rounded-xl font-sans' : 'rounded-none font-mono'
+                  }`}
                 >
                   Initialize First Goal
                 </Button>
@@ -363,20 +387,32 @@ export function GoalsView() {
                     exit={{ opacity: 0, scale: 0.95 }}
                     transition={{ duration: 0.25 }}
                     onClick={() => handleOpenDetail(goal)}
-                    className="p-6 bg-white/5 border border-white/10 hover:border-white/20 transition-all duration-300 flex flex-col justify-between cursor-pointer group relative"
+                    className={`p-6 transition-all duration-300 flex flex-col justify-between cursor-pointer group relative ${
+                      theme === 'dark-design'
+                        ? 'bg-[#09090b] border border-white/5 hover:border-white/15 rounded-2xl shadow-lg'
+                        : 'bg-white/5 border border-white/10 hover:border-white/20'
+                    }`}
                   >
                     {/* Top Row: Tags */}
                     <div className="flex items-center justify-between gap-4 mb-4">
                       <div className="flex items-center gap-2">
-                        <span className="px-2 py-0.5 border border-white/10 text-[8px] tracking-widest uppercase text-[#8c8c8c] bg-white/5 font-mono">
+                        <span className={`px-2 py-0.5 border text-[8px] tracking-widest uppercase transition-all duration-300 ${
+                          theme === 'dark-design'
+                            ? 'border-white/10 bg-white/5 rounded-full font-sans text-neutral-300 font-bold'
+                            : 'border-white/10 text-[#8c8c8c] bg-white/5 font-mono'
+                        }`}>
                           {goal.category}
                         </span>
-                        <span className={`px-2 py-0.5 border text-[8px] tracking-widest uppercase font-mono ${priorityStyles[goal.priority] || ''}`}>
+                        <span className={`px-2 py-0.5 border text-[8px] tracking-widest uppercase transition-all duration-300 ${
+                          theme === 'dark-design'
+                            ? 'border-white/10 bg-white/5 rounded-full font-sans text-neutral-300 font-bold'
+                            : `font-mono ${priorityStyles[goal.priority] || ''}`
+                        }`}>
                           {goal.priority}
                         </span>
                       </div>
                       <span className={`text-[8px] tracking-wider uppercase font-bold ${
-                        isCompleted ? 'text-[#00ffb2]' : isArchived ? 'text-[#6c6c6c]' : 'text-[#8898e7]'
+                        isCompleted ? (theme === 'dark-design' ? 'text-green-400' : 'text-[#00ffb2]') : isArchived ? 'text-[#6c6c6c]' : (theme === 'dark-design' ? 'text-white' : 'text-[#8898e7]')
                       }`}>
                         {goal.status}
                       </span>
@@ -384,11 +420,15 @@ export function GoalsView() {
 
                     {/* Middle: Title & Description */}
                     <div className="space-y-2 flex-1">
-                      <h3 className={`text-base font-extrabold tracking-wide uppercase text-white ${isCompleted ? 'line-through opacity-60' : ''}`}>
+                      <h3 className={`text-base font-extrabold tracking-wide uppercase text-white ${isCompleted ? 'line-through opacity-60' : ''} ${
+                        theme === 'dark-design' ? 'font-sans' : ''
+                      }`}>
                         {goal.title}
                       </h3>
                       {goal.description && (
-                        <p className="text-[11px] text-[#8c8c8c] leading-relaxed line-clamp-2 font-mono">
+                        <p className={`text-[11px] leading-relaxed line-clamp-2 ${
+                          theme === 'dark-design' ? 'text-neutral-400 font-sans' : 'text-[#8c8c8c] font-mono'
+                        }`}>
                           {goal.description}
                         </p>
                       )}
@@ -398,7 +438,7 @@ export function GoalsView() {
                     <div className="mt-6 pt-4 border-t border-white/5 flex items-center justify-between">
                       <div className="flex items-center gap-2 text-[#6c6c6c] text-[10px]">
                         <Calendar size={12} />
-                        <span className="tracking-wider">{formatDate(goal.targetDate)}</span>
+                        <span className={`tracking-wider ${theme === 'dark-design' ? 'font-sans' : 'font-mono'}`}>{formatDate(goal.targetDate)}</span>
                       </div>
 
                       {/* Card Action Controls */}

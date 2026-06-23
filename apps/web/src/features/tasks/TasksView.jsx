@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { useTaskStore } from '../../app/store/taskStore.js';
 import { useGoalStore } from '../../app/store/goalStore.js';
+import { useAppStore } from '../../app/store/useAppStore.js';
 import { 
   Button, 
   Input, 
@@ -38,6 +39,7 @@ function formatDate(dateString) {
 }
 
 export function TasksView() {
+  const { theme } = useAppStore();
   const {
     tasks,
     loading,
@@ -228,28 +230,44 @@ export function TasksView() {
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.95 }}
         transition={{ duration: 0.2 }}
-        className="p-4 bg-white/5 border border-white/10 hover:border-white/20 transition-all duration-300 flex flex-col justify-between relative group"
+        className={`p-4 transition-all duration-300 flex flex-col justify-between relative group ${
+          theme === 'dark-design'
+            ? 'bg-[#09090b] border border-white/5 hover:border-white/15 rounded-2xl shadow-lg'
+            : 'bg-white/5 border border-white/10 hover:border-white/20'
+        }`}
       >
         <div className="space-y-2">
           {/* Top Row: Priority & Goal */}
           <div className="flex flex-wrap items-center gap-2">
-            <span className={`px-2 py-0.5 border text-[8px] tracking-widest uppercase font-mono ${priorityStyles[task.priority] || ''}`}>
+            <span className={`px-2 py-0.5 border text-[8px] tracking-widest uppercase transition-all duration-300 ${
+              theme === 'dark-design'
+                ? 'border-white/10 bg-white/5 rounded-full font-sans text-neutral-300 font-bold'
+                : `font-mono ${priorityStyles[task.priority] || ''}`
+            }`}>
               {task.priority}
             </span>
             {matchedGoal && (
-              <span className="px-2 py-0.5 border border-[#8898e7]/20 text-[8px] tracking-widest uppercase text-[#8898e7] bg-[#8898e7]/5 font-mono flex items-center gap-1">
+              <span className={`px-2 py-0.5 border text-[8px] tracking-widest uppercase flex items-center gap-1 transition-all duration-300 ${
+                theme === 'dark-design'
+                  ? 'border-white/10 text-neutral-300 bg-white/5 rounded-full font-sans font-bold'
+                  : 'border-[#8898e7]/20 text-[#8898e7] bg-[#8898e7]/5 font-mono'
+              }`}>
                 <Target size={8} />
                 {matchedGoal.title.length > 15 ? `${matchedGoal.title.substring(0, 15)}...` : matchedGoal.title}
               </span>
             )}
           </div>
 
-          <h4 className={`text-xs font-bold tracking-wide uppercase text-white ${isCompleted ? 'line-through opacity-50' : ''}`}>
+          <h4 className={`text-xs font-bold tracking-wide uppercase text-white ${isCompleted ? 'line-through opacity-50' : ''} ${
+            theme === 'dark-design' ? 'font-sans' : ''
+          }`}>
             {task.title}
           </h4>
 
           {task.description && (
-            <p className="text-[10px] text-[#8c8c8c] leading-relaxed line-clamp-2 font-mono">
+            <p className={`text-[10px] leading-relaxed line-clamp-2 ${
+              theme === 'dark-design' ? 'text-neutral-400 font-sans' : 'text-[#8c8c8c] font-mono'
+            }`}>
               {task.description}
             </p>
           )}
@@ -257,7 +275,7 @@ export function TasksView() {
 
         {/* Bottom Metadata & Controls */}
         <div className="mt-4 pt-3 border-t border-white/5 flex items-center justify-between">
-          <div className="flex items-center gap-1.5 text-[#6c6c6c] text-[9px] font-mono">
+          <div className={`flex items-center gap-1.5 text-[#6c6c6c] text-[9px] ${theme === 'dark-design' ? 'font-sans' : 'font-mono'}`}>
             <Calendar size={10} />
             <span>{formatDate(task.dueDate)}</span>
           </div>
@@ -322,18 +340,22 @@ export function TasksView() {
   };
 
   return (
-    <div className="space-y-12 pb-24 font-mono">
+    <div className={`space-y-12 pb-24 ${theme === 'dark-design' ? 'font-sans' : 'font-mono'}`}>
       {/* Header Section */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-6 border-b border-white/10">
+      <div className={`flex flex-col md:flex-row md:items-center justify-between gap-6 pb-6 border-b ${
+        theme === 'dark-design' ? 'border-white/5' : 'border-white/10'
+      }`}>
         <div>
-          <h1 className="text-3xl font-extrabold tracking-tight text-white uppercase font-mono">Operational Tasks</h1>
-          <p className="text-[10px] text-[#6c6c6c] mt-1 tracking-wider uppercase font-mono">
+          <h1 className={`text-3xl font-extrabold tracking-tight text-white uppercase ${theme === 'dark-design' ? 'font-sans' : 'font-mono'}`}>Operational Tasks</h1>
+          <p className={`text-[10px] text-[#6c6c6c] mt-1 tracking-wider uppercase ${theme === 'dark-design' ? 'font-sans' : 'font-mono'}`}>
             Calibrate task state lists and Kanban parameters.
           </p>
         </div>
         <Button 
           onClick={handleOpenCreate}
-          className="bg-white text-black border-white hover:bg-white/90 self-start md:self-auto rounded-none text-[10px] tracking-widest font-bold uppercase py-2 px-4 flex items-center gap-2"
+          className={`bg-white text-black border-white hover:bg-white/90 self-start md:self-auto text-[10px] tracking-widest font-bold uppercase py-2 px-4 flex items-center gap-2 ${
+            theme === 'dark-design' ? 'rounded-xl font-sans' : 'rounded-none font-mono'
+          }`}
         >
           <Plus size={14} />
           Create Task
@@ -355,38 +377,48 @@ export function TasksView() {
       )}
 
       {/* Task Statistics Section */}
-      <section className="grid grid-cols-2 lg:grid-cols-4 gap-6 py-6 border-b border-white/10">
+      <section className={`grid grid-cols-2 lg:grid-cols-4 gap-6 py-6 border-b transition-all duration-300 ${
+        theme === 'dark-design' 
+          ? 'bg-[#09090b] border border-white/5 rounded-2xl p-6 shadow-xl mb-6' 
+          : 'border-white/10'
+      }`}>
         <div className="space-y-2">
-          <span className="text-[9px] text-[#6c6c6c] tracking-widest uppercase font-mono block">Total Tasks</span>
+          <span className={`text-[9px] text-[#6c6c6c] tracking-widest uppercase block ${theme === 'dark-design' ? 'font-sans' : 'font-mono'}`}>Total Tasks</span>
           <div className="text-4xl font-black text-white font-sans tracking-tight">{totalTasks}</div>
         </div>
-        <div className="space-y-2 border-l border-white/10 pl-6">
-          <span className="text-[9px] text-[#6c6c6c] tracking-widest uppercase font-mono block">Pending</span>
+        <div className={`space-y-2 pl-6 ${theme === 'dark-design' ? 'border-l border-white/5' : 'border-l border-white/10'}`}>
+          <span className={`text-[9px] text-[#6c6c6c] tracking-widest uppercase block ${theme === 'dark-design' ? 'font-sans' : 'font-mono'}`}>Pending</span>
           <div className="text-4xl font-black text-[#8c8c8c] font-sans tracking-tight">{pendingCount}</div>
         </div>
-        <div className="space-y-2 border-l border-white/10 pl-6">
-          <span className="text-[9px] text-[#6c6c6c] tracking-widest uppercase font-mono block">In Progress</span>
-          <div className="text-4xl font-black text-[#8898e7] font-sans tracking-tight">{inProgressCount}</div>
+        <div className={`space-y-2 pl-6 ${theme === 'dark-design' ? 'border-l border-white/5' : 'border-l border-white/10'}`}>
+          <span className={`text-[9px] text-[#6c6c6c] tracking-widest uppercase block ${theme === 'dark-design' ? 'font-sans' : 'font-mono'}`}>In Progress</span>
+          <div className="text-4xl font-black text-white font-sans tracking-tight">{inProgressCount}</div>
         </div>
-        <div className="space-y-2 border-l border-white/10 pl-6">
-          <span className="text-[9px] text-[#6c6c6c] tracking-widest uppercase font-mono block">Completion Rate</span>
+        <div className={`space-y-2 pl-6 ${theme === 'dark-design' ? 'border-l border-white/5' : 'border-l border-white/10'}`}>
+          <span className={`text-[9px] text-[#6c6c6c] tracking-widest uppercase block ${theme === 'dark-design' ? 'font-sans' : 'font-mono'}`}>Completion Rate</span>
           <div className="text-4xl font-black text-[#00ffb2] font-sans tracking-tight">{completionPercentage}%</div>
         </div>
       </section>
 
       {/* Kanban Board columns */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-12 py-8 border-y border-white/10 min-h-[300px]">
+      <div className={`grid grid-cols-1 md:grid-cols-3 gap-12 py-8 min-h-[300px] transition-all duration-300 ${
+        theme === 'dark-design' ? 'border-none gap-8' : 'border-y border-white/10'
+      }`}>
         {/* To Do Column */}
-        <div className="space-y-4 pr-0 md:pr-6">
-          <h3 className="text-sm uppercase tracking-wider text-[#8c8c8c] border-b border-white/10 pb-2 font-bold flex justify-between items-center">
+        <div className={`space-y-4 ${
+          theme === 'dark-design' ? 'bg-[#09090b] border border-white/5 p-6 rounded-2xl shadow-lg' : 'pr-0 md:pr-6'
+        }`}>
+          <h3 className={`text-sm uppercase tracking-wider border-b pb-2 font-bold flex justify-between items-center transition-all duration-300 ${
+            theme === 'dark-design' ? 'text-white border-white/5 font-sans' : 'text-[#8c8c8c] border-white/10 font-mono'
+          }`}>
             <span>To Do</span>
-            <span className="text-xs font-normal text-[#6c6c6c]">{pendingTasks.length}</span>
+            <span className={`text-xs font-normal ${theme === 'dark-design' ? 'text-[#8c8c8c]' : 'text-[#6c6c6c]'}`}>{pendingTasks.length}</span>
           </h3>
           <div className="space-y-3">
             {loading && tasks.length === 0 ? (
-              <Skeleton className="h-24 w-full bg-white/5 rounded-none" />
+              <Skeleton className={`h-24 w-full bg-white/5 ${theme === 'dark-design' ? 'rounded-2xl' : 'rounded-none'}`} />
             ) : pendingTasks.length === 0 ? (
-              <div className="text-[10px] text-[#6c6c6c] uppercase py-4">No tasks in backlog</div>
+              <div className={`text-[10px] uppercase py-4 ${theme === 'dark-design' ? 'text-neutral-400 font-sans' : 'text-[#6c6c6c] font-mono'}`}>No tasks in backlog</div>
             ) : (
               <AnimatePresence mode="popLayout">
                 {pendingTasks.map(renderTaskCard)}
@@ -396,19 +428,25 @@ export function TasksView() {
         </div>
 
         {/* In Progress Column */}
-        <div className="space-y-4 px-0 md:px-6 md:border-x md:border-white/10">
-          <h3 className="text-sm uppercase tracking-wider text-white border-b border-[#8898e7]/30 pb-2 font-bold flex items-center justify-between">
+        <div className={`space-y-4 ${
+          theme === 'dark-design' 
+            ? 'bg-[#09090b] border border-white/5 p-6 rounded-2xl shadow-lg' 
+            : 'px-0 md:px-6 md:border-x md:border-white/10'
+        }`}>
+          <h3 className={`text-sm uppercase tracking-wider border-b pb-2 font-bold flex items-center justify-between transition-all duration-300 ${
+            theme === 'dark-design' ? 'text-white border-white/5 font-sans' : 'text-white border-[#8898e7]/30 font-mono'
+          }`}>
             <span>In Progress</span>
             <span className="flex items-center gap-2">
-              <span className="text-xs font-normal text-[#8c8c8c]">{inProgressTasks.length}</span>
-              <span className="h-1.5 w-1.5 bg-[#8898e7] rounded-full animate-pulse"></span>
+              <span className={`text-xs font-normal ${theme === 'dark-design' ? 'text-[#8c8c8c]' : 'text-[#8c8c8c]'}`}>{inProgressTasks.length}</span>
+              <span className={`h-1.5 w-1.5 rounded-full ${theme === 'dark-design' ? 'bg-green-400 shadow-[0_0_8px_rgba(74,222,128,0.5)]' : 'bg-[#8898e7] animate-pulse'}`}></span>
             </span>
           </h3>
           <div className="space-y-3">
             {loading && tasks.length === 0 ? (
-              <Skeleton className="h-24 w-full bg-white/5 rounded-none" />
+              <Skeleton className={`h-24 w-full bg-white/5 ${theme === 'dark-design' ? 'rounded-2xl' : 'rounded-none'}`} />
             ) : inProgressTasks.length === 0 ? (
-              <div className="text-[10px] text-[#6c6c6c] uppercase py-4">No tasks active</div>
+              <div className={`text-[10px] uppercase py-4 ${theme === 'dark-design' ? 'text-neutral-400 font-sans' : 'text-[#6c6c6c] font-mono'}`}>No tasks active</div>
             ) : (
               <AnimatePresence mode="popLayout">
                 {inProgressTasks.map(renderTaskCard)}
@@ -418,16 +456,20 @@ export function TasksView() {
         </div>
 
         {/* Completed Column */}
-        <div className="space-y-4 pl-0 md:pl-6">
-          <h3 className="text-sm uppercase tracking-wider text-[#6c6c6c] border-b border-white/10 pb-2 font-bold flex justify-between items-center">
+        <div className={`space-y-4 ${
+          theme === 'dark-design' ? 'bg-[#09090b] border border-white/5 p-6 rounded-2xl shadow-lg' : 'pl-0 md:pl-6'
+        }`}>
+          <h3 className={`text-sm uppercase tracking-wider border-b pb-2 font-bold flex justify-between items-center transition-all duration-300 ${
+            theme === 'dark-design' ? 'text-white border-white/5 font-sans' : 'text-[#6c6c6c] border-white/10 font-mono'
+          }`}>
             <span>Completed</span>
-            <span className="text-xs font-normal text-[#6c6c6c]">{completedTasks.length}</span>
+            <span className={`text-xs font-normal ${theme === 'dark-design' ? 'text-[#8c8c8c]' : 'text-[#6c6c6c]'}`}>{completedTasks.length}</span>
           </h3>
           <div className="space-y-3">
             {loading && tasks.length === 0 ? (
-              <Skeleton className="h-24 w-full bg-white/5 rounded-none" />
+              <Skeleton className={`h-24 w-full bg-white/5 ${theme === 'dark-design' ? 'rounded-2xl' : 'rounded-none'}`} />
             ) : completedTasks.length === 0 ? (
-              <div className="text-[10px] text-[#6c6c6c] uppercase py-4">No tasks completed</div>
+              <div className={`text-[10px] uppercase py-4 ${theme === 'dark-design' ? 'text-neutral-400 font-sans' : 'text-[#6c6c6c] font-mono'}`}>No tasks completed</div>
             ) : (
               <AnimatePresence mode="popLayout">
                 {completedTasks.map(renderTaskCard)}

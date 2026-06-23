@@ -4,7 +4,7 @@ import { create } from 'zustand';
  * Global Zustand state store for UI and local application state.
  */
 export const useAppStore = create((set) => ({
-  theme: 'dark',
+  theme: 'blueprint',
   sidebarOpen: true,
   
   /**
