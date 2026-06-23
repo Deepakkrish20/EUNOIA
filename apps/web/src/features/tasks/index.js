@@ -1,3 +1,3 @@
 // Tasks feature module exports
-export const TasksView = () => null;
+export { TasksView } from './TasksView.jsx';
 export const KanbanBoard = () => null;

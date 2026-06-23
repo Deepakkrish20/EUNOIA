@@ -1,3 +1,4 @@
-// Goals feature module exports
-export const GoalsView = () => null;
+import { GoalsView } from './GoalsView.jsx';
+
+export { GoalsView };
 export const GoalMilestones = () => null;

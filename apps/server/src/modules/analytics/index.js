@@ -1,9 +1,3 @@
-import { Router } from 'express';
+import analyticsRouter from './analytics.routes.js';
 
-const router = Router();
-
-router.get('/reports', (req, res) => {
-  res.json({ message: 'Analytics engine reports endpoint stub' });
-});
-
-export default router;
+export default analyticsRouter;

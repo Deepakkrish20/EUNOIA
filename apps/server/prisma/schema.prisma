@@ -1,8 +1,8 @@
 // Prisma schema file for EUNOIA OS Database
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider = "sqlite"
+  url      = "file:./dev.db"
 }
 
 generator client {
@@ -29,31 +29,50 @@ model User {
   @@index([email])
 }
 
+enum GoalStatus {
+  active
+  completed
+  archived
+}
+
+enum GoalPriority {
+  low
+  medium
+  high
+}
+
 model Goal {
-  id          String   @id @default(uuid())
+  id          String       @id @default(uuid())
   title       String
   description String?
-  status      String   @default("TODO") // TODO, IN_PROGRESS, COMPLETED
+  category    String
+  priority    GoalPriority
+  status      GoalStatus   @default(active)
+  targetDate  DateTime
+  completedAt DateTime?
   userId      String
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
   tasks       Task[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
 
   @@index([userId])
 }
 
 model Task {
-  id          String   @id @default(uuid())
+  id          String    @id @default(uuid())
   title       String
   description String?
-  status      String   @default("TODO") // TODO, IN_PROGRESS, COMPLETED
+  status      String    @default("pending") // pending, in_progress, completed
+  priority    String    @default("medium")  // low, medium, high
+  dueDate     DateTime?
+  completedAt DateTime?
   userId      String
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   goalId      String?
-  goal        Goal?    @relation(fields: [goalId], references: [id], onDelete: SetNull)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  goal        Goal?     @relation(fields: [goalId], references: [id], onDelete: SetNull)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 
   @@index([userId])
   @@index([goalId])
@@ -124,13 +143,15 @@ model LearningProgress {
 }
 
 model Activity {
-  id        String   @id @default(uuid())
-  action    String   // LOGGED_IN, CREATE_TASK, ASK_AI
-  metadata  Json?    // Context payload
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id         String   @id @default(uuid())
+  action     String   // LOGGED_IN, CREATE_TASK, ASK_AI
+  entityType String?
+  entityId   String?
+  metadata   Json?    // Context payload
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
   @@index([userId])
 }

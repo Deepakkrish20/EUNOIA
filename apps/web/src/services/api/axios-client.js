@@ -21,16 +21,21 @@ export function registerTokenResolver(tokenFn) {
 // Request Interceptor: Inject Bearer Session token dynamically
 axiosClient.interceptors.request.use(
   async (config) => {
+    let token = null;
     if (getAuthTokenFn) {
       try {
-        const token = await getAuthTokenFn();
-        if (token) {
-          config.headers.Authorization = `Bearer ${token}`;
-        }
+        token = await getAuthTokenFn();
       } catch (error) {
         console.error('[Axios Request Interceptor] Failed to fetch session token:', error);
       }
     }
+
+    // Provide a fallback development token if Clerk is not configured/logged in
+    if (!token) {
+      token = 'standard-token';
+    }
+
+    config.headers.Authorization = `Bearer ${token}`;
     return config;
   },
   (error) => Promise.reject(error)

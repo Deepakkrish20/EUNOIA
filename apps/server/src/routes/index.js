@@ -10,6 +10,7 @@ import tasksRouter from '../modules/tasks/index.js';
 import learningRouter from '../modules/learning/index.js';
 import assistantRouter from '../modules/assistant/index.js';
 import analyticsRouter from '../modules/analytics/index.js';
+import activitiesRouter from '../modules/activities/index.js';
 
 import { requireAuth } from '../core/middleware/auth.middleware.js';
 
@@ -29,5 +30,6 @@ router.use('/tasks', requireAuth, tasksRouter);
 router.use('/learning', requireAuth, learningRouter);
 router.use('/assistant', requireAuth, assistantRouter);
 router.use('/analytics', requireAuth, analyticsRouter);
+router.use('/activities', requireAuth, activitiesRouter);
 
 export default router;

@@ -1,9 +1,3 @@
-import { Router } from 'express';
+import tasksRouter from './task.routes.js';
 
-const router = Router();
-
-router.get('/list', (req, res) => {
-  res.json({ message: 'Tasks list endpoint stub' });
-});
-
-export default router;
+export default tasksRouter;

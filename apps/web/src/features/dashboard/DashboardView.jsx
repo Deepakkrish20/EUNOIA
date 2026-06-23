@@ -1,4 +1,26 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useActivityStore } from '../../app/store/activityStore.js';
+import { useGoalStore } from '../../app/store/goalStore.js';
+
+// Helper to format relative time for audit trail
+function formatRelativeTime(dateString) {
+  if (!dateString) return 'N/A';
+  const date = new Date(dateString);
+  if (isNaN(date.getTime())) return 'N/A';
+  
+  const now = new Date();
+  const diffMs = now - date;
+  const diffSec = Math.floor(diffMs / 1000);
+  const diffMin = Math.floor(diffSec / 60);
+  const diffHr = Math.floor(diffMin / 60);
+  const diffDays = Math.floor(diffHr / 24);
+
+  if (diffSec < 10) return 'Just Now';
+  if (diffSec < 60) return `${diffSec} secs ago`;
+  if (diffMin < 60) return `${diffMin} mins ago`;
+  if (diffHr < 24) return `${diffHr} hours ago`;
+  return `${diffDays} days ago`;
+}
 import { 
   Button, 
   Input, 
@@ -13,6 +35,23 @@ import SplitText from '../../components/SplitText';
  * All Card component boxes are removed in favor of clean spaced layouts and fine dividing lines.
  */
 export function DashboardView() {
+  const { recentActivities, fetchRecentActivities } = useActivityStore();
+  const { goals, fetchGoals } = useGoalStore();
+
+  useEffect(() => {
+    fetchRecentActivities();
+    fetchGoals();
+  }, [fetchRecentActivities, fetchGoals]);
+
+  const activityRows = recentActivities.map((act) => [
+    act.action,
+    formatRelativeTime(act.createdAt),
+    act.entityId ? `/api/${act.entityType || 'goals'}/${act.entityId}` : 'N/A',
+    `${act.userId} (USER)`
+  ]);
+
+  const displayGoals = goals.slice(0, 3);
+
   return (
     <div className="space-y-16 pb-24 font-mono">
       
@@ -154,29 +193,34 @@ export function DashboardView() {
             <p className="text-[10px] text-[#6c6c6c] mt-1 tracking-wider uppercase font-mono">Active strategic milestones tracking</p>
           </div>
           <div className="space-y-4">
-            <div className="flex items-center justify-between p-4 bg-white/5 border border-white/10 hover:border-white/30 transition-all duration-300">
-              <div className="space-y-1">
-                <h4 className="text-xs font-bold text-white uppercase tracking-wider">Architect Backend Layer</h4>
-                <p className="text-[10px] text-[#6c6c6c] uppercase">Prisma model setups and Express controllers</p>
+            {displayGoals.length === 0 ? (
+              <div className="text-[10px] text-[#6c6c6c] uppercase py-4 border border-dashed border-white/10 text-center font-mono">
+                No active objectives initialized
               </div>
-              <span className="text-[9px] text-[#8898e7] font-bold tracking-wider">100% DONE</span>
-            </div>
-
-            <div className="flex items-center justify-between p-4 bg-white/5 border border-white/10 hover:border-white/30 transition-all duration-300">
-              <div className="space-y-1">
-                <h4 className="text-xs font-bold text-white uppercase tracking-wider">Visual Design Overhaul</h4>
-                <p className="text-[10px] text-[#6c6c6c] uppercase">Bypass standard layouts with black/pink presets</p>
-              </div>
-              <span className="text-[9px] text-white font-bold tracking-wider animate-pulse">80% ACTIVE</span>
-            </div>
-
-            <div className="flex items-center justify-between p-4 bg-white/5 border border-white/10 hover:border-white/30 transition-all duration-300">
-              <div className="space-y-1">
-                <h4 className="text-xs font-bold text-white uppercase tracking-wider">Offload AI Workloads</h4>
-                <p className="text-[10px] text-[#6c6c6c] uppercase">Integrate BullMQ redis workers queues</p>
-              </div>
-              <span className="text-[9px] text-[#6c6c6c] font-bold tracking-wider">PLANNING</span>
-            </div>
+            ) : (
+              displayGoals.map((goal) => {
+                const percentageMap = {
+                  active: '80% ACTIVE',
+                  completed: '100% DONE',
+                  archived: 'ARCHIVED'
+                };
+                const statusText = percentageMap[goal.status] || 'ACTIVE';
+                const isCompleted = goal.status === 'completed';
+                return (
+                  <div key={goal.id} className="flex items-center justify-between p-4 bg-white/5 border border-white/10 hover:border-white/30 transition-all duration-300">
+                    <div className="space-y-1">
+                      <h4 className="text-xs font-bold text-white uppercase tracking-wider">{goal.title}</h4>
+                      <p className="text-[10px] text-[#6c6c6c] uppercase">{goal.description || goal.category}</p>
+                    </div>
+                    <span className={`text-[9px] font-bold tracking-wider ${
+                      isCompleted ? 'text-[#8898e7]' : 'text-white'
+                    } ${goal.status === 'active' ? 'animate-pulse' : ''}`}>
+                      {statusText}
+                    </span>
+                  </div>
+                );
+              })
+            )}
           </div>
         </div>
 
@@ -289,7 +333,7 @@ export function DashboardView() {
         <div className="border border-white/10 p-0">
           <Table 
             headers={['Event Log Action', 'Timestamp', 'Target Scope Path', 'Authorization Context']}
-            rows={[
+            rows={activityRows.length > 0 ? activityRows : [
               ['AUTH_SESSION_VALIDATE', 'Just Now', '/api/auth/session', 'user_clerk_admin_123 (ADMIN)'],
               ['TWIN_SKILL_EXPANDED', '12 mins ago', '/api/twin/state', 'user_clerk_standard_123 (USER)'],
               ['AI_PROMPT_OPTIMIZE', '45 mins ago', '/api/assistant/chat', 'user_clerk_standard_123 (USER)'],
